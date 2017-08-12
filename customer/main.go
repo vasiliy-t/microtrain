@@ -4,6 +4,10 @@ import (
 	"log"
 	"net"
 
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/vasiliy-t/microtrain/customer/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -28,8 +32,16 @@ func main() {
 	s := grpc.NewServer()
 	proto.RegisterCustomerServiceServer(s, &server{})
 	log.Println("customer service starting")
-	err = s.Serve(l)
-	if err != nil {
-		log.Fatalf("Error while starting grpc server %s", err)
-	}
+
+	exitchan := make(chan os.Signal)
+	signal.Notify(exitchan, syscall.SIGTERM)
+
+	go func() {
+		err = s.Serve(l)
+		if err != nil {
+			log.Fatalf("Error while starting grpc server %s", err)
+		}
+	}()
+	<-exitchan
+	s.GracefulStop()
 }
