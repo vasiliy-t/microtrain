@@ -13,5 +13,5 @@ services:
 
   wishlist:
     build:
-      context: ./wishlist
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: wishlist/Dockerfile
