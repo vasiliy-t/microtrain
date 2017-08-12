@@ -8,8 +8,8 @@ services:
 
   customer:
     build:
-      context: ./customer
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: customer/Dockerfile
 
   wishlist:
     build:

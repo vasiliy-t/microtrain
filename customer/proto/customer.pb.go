@@ -20,6 +20,11 @@ import proto1 "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 
+import (
+	context "golang.org/x/net/context"
+	grpc "google.golang.org/grpc"
+)
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto1.Marshal
 var _ = fmt.Errorf
@@ -125,6 +130,111 @@ func init() {
 	proto1.RegisterType((*GetCustomerResponse)(nil), "proto.GetCustomerResponse")
 	proto1.RegisterType((*SaveCustomerRequest)(nil), "proto.SaveCustomerRequest")
 	proto1.RegisterType((*SaveCustomerResponse)(nil), "proto.SaveCustomerResponse")
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// Client API for CustomerService service
+
+type CustomerServiceClient interface {
+	Get(ctx context.Context, in *GetCustomerRequest, opts ...grpc.CallOption) (*GetCustomerResponse, error)
+	Save(ctx context.Context, in *SaveCustomerRequest, opts ...grpc.CallOption) (*SaveCustomerResponse, error)
+}
+
+type customerServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewCustomerServiceClient(cc *grpc.ClientConn) CustomerServiceClient {
+	return &customerServiceClient{cc}
+}
+
+func (c *customerServiceClient) Get(ctx context.Context, in *GetCustomerRequest, opts ...grpc.CallOption) (*GetCustomerResponse, error) {
+	out := new(GetCustomerResponse)
+	err := grpc.Invoke(ctx, "/proto.CustomerService/Get", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *customerServiceClient) Save(ctx context.Context, in *SaveCustomerRequest, opts ...grpc.CallOption) (*SaveCustomerResponse, error) {
+	out := new(SaveCustomerResponse)
+	err := grpc.Invoke(ctx, "/proto.CustomerService/Save", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for CustomerService service
+
+type CustomerServiceServer interface {
+	Get(context.Context, *GetCustomerRequest) (*GetCustomerResponse, error)
+	Save(context.Context, *SaveCustomerRequest) (*SaveCustomerResponse, error)
+}
+
+func RegisterCustomerServiceServer(s *grpc.Server, srv CustomerServiceServer) {
+	s.RegisterService(&_CustomerService_serviceDesc, srv)
+}
+
+func _CustomerService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCustomerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CustomerServiceServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.CustomerService/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CustomerServiceServer).Get(ctx, req.(*GetCustomerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CustomerService_Save_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveCustomerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CustomerServiceServer).Save(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.CustomerService/Save",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CustomerServiceServer).Save(ctx, req.(*SaveCustomerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _CustomerService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.CustomerService",
+	HandlerType: (*CustomerServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Get",
+			Handler:    _CustomerService_Get_Handler,
+		},
+		{
+			MethodName: "Save",
+			Handler:    _CustomerService_Save_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/customer.proto",
 }
 
 func init() { proto1.RegisterFile("proto/customer.proto", fileDescriptor0) }
