@@ -17,6 +17,11 @@ import proto1 "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 
+import (
+	context "golang.org/x/net/context"
+	grpc "google.golang.org/grpc"
+)
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto1.Marshal
 var _ = fmt.Errorf
@@ -55,6 +60,78 @@ func (*GetResponse) Descriptor() ([]byte, []int) { return fileDescriptor0, []int
 func init() {
 	proto1.RegisterType((*GetRequest)(nil), "proto.GetRequest")
 	proto1.RegisterType((*GetResponse)(nil), "proto.GetResponse")
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// Client API for WishlistService service
+
+type WishlistServiceClient interface {
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+}
+
+type wishlistServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewWishlistServiceClient(cc *grpc.ClientConn) WishlistServiceClient {
+	return &wishlistServiceClient{cc}
+}
+
+func (c *wishlistServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+	out := new(GetResponse)
+	err := grpc.Invoke(ctx, "/proto.WishlistService/Get", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for WishlistService service
+
+type WishlistServiceServer interface {
+	Get(context.Context, *GetRequest) (*GetResponse, error)
+}
+
+func RegisterWishlistServiceServer(s *grpc.Server, srv WishlistServiceServer) {
+	s.RegisterService(&_WishlistService_serviceDesc, srv)
+}
+
+func _WishlistService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WishlistServiceServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.WishlistService/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WishlistServiceServer).Get(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _WishlistService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.WishlistService",
+	HandlerType: (*WishlistServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Get",
+			Handler:    _WishlistService_Get_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/wishlist.proto",
 }
 
 func init() { proto1.RegisterFile("proto/wishlist.proto", fileDescriptor0) }

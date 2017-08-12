@@ -5,4 +5,4 @@ proto/wishlist.pb.go: proto/wishlist.proto
 	@docker run --rm \
 		-v $(CURDIR):$(CWD) \
 		-w $(GOPATH) \
-		grpc/go:1.0 protoc -I$(CWD) --go_out=. $(CWD)/proto/wishlist.proto 
+		grpc/go:1.0 protoc -I$(CWD) --go_out=plugins=grpc:. $(CWD)/proto/wishlist.proto 

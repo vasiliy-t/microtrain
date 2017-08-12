@@ -6,4 +6,4 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -o wishlist/wishlist wishl
 FROM alpine:3.6
 WORKDIR /app
 COPY --from=builder /go/src/github.com/vasiliy-t/microtrain/wishlist/wishlist .
-CMD ["/app/wishlist"]
+CMD ["./wishlist"]
