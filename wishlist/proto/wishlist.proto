@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/vasiliy-t/microtrain/wishlist/proto";
+
+service WishlistService {
+    rpc Get(GetRequest) returns (GetResponse);
+}
+
+message GetRequest {
+    int64 customer_id = 1;
+}
+message GetResponse {
+}

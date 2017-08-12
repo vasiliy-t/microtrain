@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/vasiliy-t/microtrain/customer/proto";
+
+service CustomerService {
+    rpc Get(GetCustomerRequest) returns (GetCustomerResponse);
+    rpc Save(SaveCustomerRequest) returns (SaveCustomerResponse);
+}
+
+message Customer {
+    int64 id = 1;
+    string name = 2;
+}
+
+message GetCustomerRequest {
+    Customer customer = 1;
+}
+message GetCustomerResponse {
+    Customer customer = 1;
+}
+
+message SaveCustomerRequest {
+    Customer customer = 1;
+}
+message SaveCustomerResponse {
+    Customer customer = 1;
+}
